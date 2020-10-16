@@ -4,6 +4,17 @@
 
 This is for the learning purposes!!
 
+## Routes
+
+```
+[Method]       [Route]
+GET            /api/products         Fetch all products
+GET            /api/products/:id     Fetch single product
+POST           /api/products         Create a new product
+PUT            /api/products/:id     Update a product
+DELETE         /api/products/:id     Delete a product
+```
+
 ## Usage
 
 ```
