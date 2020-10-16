@@ -1,7 +1,7 @@
 {
   "name": "node-rest-api",
   "version": "1.0.0",
-  "description": "Full CRUD REST API using only Node.js without framework",
+  "description": "Full CRUD REST API using only Node.js without framework such as express",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
