@@ -1,0 +1,25 @@
+{
+  "name": "node-rest-api",
+  "version": "1.0.0",
+  "description": "Full CRUD REST API using only Node.js without framework",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rohan-Shakya/node-rest-api.git"
+  },
+  "author": "Rohan Shakya",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rohan-Shakya/node-rest-api/issues"
+  },
+  "homepage": "https://github.com/Rohan-Shakya/node-rest-api#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.5"
+  },
+  "dependencies": {
+    "uuid": "^8.3.1"
+  }
+}
