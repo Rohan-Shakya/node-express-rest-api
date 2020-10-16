@@ -1,7 +1,10 @@
 const http = require('http');
+const { getProducts } = require('./controllers/productController');
 
 const server = http.createServer((req, res) => {
-  console.log(req.url);
+  if (req.url === '/api/products' && req.method === 'GET') {
+    getProducts(req, res);
+  }
 });
 
 const PORT = process.env.PORT || 5000;
