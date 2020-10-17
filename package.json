@@ -1,7 +1,7 @@
 {
-  "name": "node-rest-api",
-  "version": "1.0.0",
-  "description": "Full CRUD REST API using only Node.js without framework such as express",
+  "name": "express-rest-api",
+  "version": "1.1.0",
+  "description": "Full CRUD REST API using express.js",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -21,6 +21,8 @@
     "nodemon": "^2.0.5"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
     "uuid": "^8.3.1"
   }
 }

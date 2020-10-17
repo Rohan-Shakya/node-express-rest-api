@@ -1,41 +1,42 @@
-const http = require('http');
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 5500;
+// const bodyParser = require('body-parser');
 const {
   getProducts,
-  getProduct,
+  getSingleProduct,
   createProduct,
   updateProduct,
-  deleteProduct,
+  removeProduct,
 } = require('./controllers/productController');
 
-const server = http.createServer((req, res) => {
-  if (req.url === '/api/products' && req.method === 'GET') {
-    getProducts(req, res);
-  } else if (
-    req.url.match(/\/api\/products\/([0-9a-zA-Z]+)/) &&
-    req.method === 'GET'
-  ) {
-    const id = req.url.split('/')[3];
-    getProduct(req, res, id);
-  } else if (req.url === '/api/products' && req.method === 'POST') {
-    createProduct(req, res);
-  } else if (
-    req.url.match(/\/api\/products\/([0-9a-zA-Z]+)/) &&
-    req.method === 'PUT'
-  ) {
-    const id = req.url.split('/')[3];
-    updateProduct(req, res, id);
-  } else if (
-    req.url.match(/\/api\/products\/([0-9a-zA-Z]+)/) &&
-    req.method === 'DELETE'
-  ) {
-    const id = req.url.split('/')[3];
-    deleteProduct(req, res, id);
-  } else {
-    res.writeHead(404, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ message: 'Route not found' }));
-  }
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.raw());
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.raw());
+
+app.get('/api/products', (req, res) => {
+  getProducts(res);
 });
 
-const PORT = process.env.PORT || 5000;
+app.get('/api/products/:id', (req, res) => {
+  const id = req.params.id;
+  getSingleProduct(id, res);
+});
 
-server.listen(PORT, () => console.log(`Listening to PORT: ${PORT}`));
+app.post('/api/products', (req, res) => {
+  createProduct(req, res);
+});
+
+app.put('/api/products/:id', (req, res) => {
+  updateProduct(req, res);
+});
+
+app.delete('/api/products/:id', (req, res) => {
+  removeProduct(req, res);
+});
+
+app.listen(PORT, () => console.log(`Listening to PORT: ${PORT}`));

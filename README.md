@@ -1,6 +1,6 @@
-# Node REST API
+# Express REST API
 
-> Full CRUD REST API using only Node.js
+> Full CRUD REST API using Express.js
 
 This is for the learning purposes!!
 

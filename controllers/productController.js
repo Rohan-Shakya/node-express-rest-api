@@ -1,108 +1,83 @@
+const { findSingleProduct } = require('../models/productModel');
 const Product = require('../models/productModel');
-const { getPostData } = require('../utils');
 
-// Get all products
-// GET /api/products
-const getProducts = async (req, res) => {
+const getProducts = async (res) => {
   try {
     const products = await Product.findAll();
-    res.writeHead(200, { 'Content-Type': 'application/json' }); // res.statusCode() + res.setHeader()
-    res.end(JSON.stringify(products)); // res.write() + res.end()
+    return res.json(products);
   } catch (err) {
     console.log(err);
   }
 };
 
-// Gets Single Product
-// GET /api/product/:id
-async function getProduct(req, res, id) {
+const getSingleProduct = async (id, res) => {
   try {
-    const product = await Product.findById(id);
-    if (!product) {
-      res.writeHead(404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ message: 'Product Not Found' }));
-    } else {
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(product));
-    }
+    const product = await Product.findSingleProduct(id);
+    return product
+      ? res.json(product)
+      : res.json({ message: 'Product not found!!' });
   } catch (err) {
     console.log(err);
   }
-}
+};
 
-// Create a Product
-// POST /api/product
-async function createProduct(req, res) {
+const createProduct = async (req, res) => {
   try {
-    const body = await getPostData(req);
-
-    const { title, description, price } = JSON.parse(body);
-
-    const product = {
+    const { title, description, price } = req.body;
+    const data = {
       title,
       description,
       price,
     };
-    const newProduct = await Product.create(product);
-    res.writeHead(201, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify(newProduct));
+    const product = await Product.create(data);
+    return res.json(product);
   } catch (err) {
     console.log(err);
   }
-}
+};
 
-// Update a Product
-// PUT /api/product/:id
-async function updateProduct(req, res, id) {
+const updateProduct = async (req, res) => {
   try {
-    const product = await Product.findById(id);
+    const id = req.params.id;
+    const product = findSingleProduct(id);
 
     if (!product) {
-      res.writeHead(404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ message: 'Product Not Found' }));
+      return res.json({ message: 'Product Not Fount' });
     } else {
-      const body = await getPostData(req);
-
-      const { title, description, price } = JSON.parse(body);
-
+      const { title, description, price } = req.body;
       const productData = {
         title: title || product.title,
         description: description || product.description,
         price: price || product.price,
       };
-
-      const updProduct = await Product.update(id, productData);
-
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      return res.end(JSON.stringify(updProduct));
+      const updatedProduct = await Product.update(id, productData);
+      return res.json(updatedProduct);
     }
   } catch (err) {
     console.log(err);
   }
-}
+};
 
-// Delete Single Product
-// DELETE /api/product/:id
-async function deleteProduct(req, res, id) {
+const removeProduct = async (req, res) => {
+  const id = req.params.id;
   try {
-    const product = await Product.findById(id);
+    const product = await Product.findSingleProduct(id);
+
     if (!product) {
-      res.writeHead(404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ message: 'Product Not Found' }));
+      return res.json({ message: 'Product Not Found' });
     } else {
       await Product.remove(id);
-      res.writeHead(404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ message: `Product ${id} removed!!` }));
+      return res.json({ message: `Product ID: ${id} removed!!` });
     }
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 module.exports = {
   getProducts,
-  getProduct,
+  getSingleProduct,
   createProduct,
   updateProduct,
-  deleteProduct,
+  removeProduct,
 };
